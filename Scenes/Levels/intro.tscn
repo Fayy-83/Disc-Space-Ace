@@ -1,0 +1,85 @@
+[gd_scene load_steps=14 format=3 uid="uid://defxj3j0xk6a1"]
+
+[ext_resource type="Texture2D" uid="uid://c8ldxtv1vy4rs" path="res://backshot.png" id="1_7e470"]
+[ext_resource type="Texture2D" uid="uid://duq61p4ww0lst" path="res://cinematic.png" id="1_u1sye"]
+[ext_resource type="FontFile" uid="uid://d0ct512ne5o6e" path="res://Assets/fonts/perfect_dos_vga_437/Perfect DOS VGA 437.ttf" id="2_00cak"]
+[ext_resource type="Script" uid="uid://cywp7okbgm8w6" path="res://Scripts/intropicture1.gd" id="2_32caw"]
+[ext_resource type="Script" uid="uid://bhxalkdvg6aci" path="res://Scripts/introtext1.gd" id="3_7e470"]
+[ext_resource type="PackedScene" uid="uid://cqk7atxootxs6" path="res://Scenes/Levels/landofgungular.tscn" id="5_0p7ue"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_32caw"]
+texture = ExtResource("1_7e470")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gpvol"]
+texture = ExtResource("1_u1sye")
+
+[sub_resource type="Theme" id="Theme_32caw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0p7ue"]
+bg_color = Color(0, 0, 0, 0)
+corner_detail = 1
+
+[sub_resource type="InputEventKey" id="InputEventKey_cayip"]
+device = -1
+keycode = 4194309
+
+[sub_resource type="Shortcut" id="Shortcut_8swui"]
+events = [SubResource("InputEventKey_cayip")]
+
+[sub_resource type="GDScript" id="GDScript_ms30g"]
+script/source = "extends Button
+@export var node:PackedScene
+func _on_pressed() -> void:
+	get_tree().change_scene_to_file(\"res://Scenes/Levels/landofgungular.tscn\")
+	pass # Replace with function body.
+"
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Panel2" type="Panel" parent="."]
+offset_right = 1156.0
+offset_bottom = 651.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_32caw")
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 1153.0
+offset_bottom = 652.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_gpvol")
+script = ExtResource("2_32caw")
+
+[node name="Control" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 102.0
+offset_bottom = 38.0
+
+[node name="Button" type="Button" parent="Control"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 348.0
+offset_top = 618.0
+offset_right = 762.0
+offset_bottom = 650.0
+focus_mode = 0
+theme = SubResource("Theme_32caw")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 0
+theme_override_fonts/font = ExtResource("2_00cak")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_0p7ue")
+shortcut = SubResource("Shortcut_8swui")
+text = "Continue? (Press Enter)"
+alignment = 0
+script = SubResource("GDScript_ms30g")
+node = ExtResource("5_0p7ue")
+
+[node name="Label" type="Label" parent="."]
+offset_top = 277.0
+offset_right = 796.0
+offset_bottom = 588.0
+theme_override_fonts/font = ExtResource("2_00cak")
+theme_override_font_sizes/font_size = 32
+script = ExtResource("3_7e470")
+
+[connection signal="pressed" from="Control/Button" to="Control/Button" method="_on_pressed"]

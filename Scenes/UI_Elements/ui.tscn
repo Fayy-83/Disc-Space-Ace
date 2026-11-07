@@ -1,0 +1,41 @@
+[gd_scene load_steps=8 format=3 uid="uid://baxuj2524agdw"]
+
+[ext_resource type="Script" uid="uid://d2ngblmp8pxgt" path="res://Scenes/UI_Elements/ui.gd" id="1_0bin2"]
+[ext_resource type="PackedScene" uid="uid://dhof2xfhcat6i" path="res://Scenes/UI_Elements/dropPoint.tscn" id="1_jxero"]
+[ext_resource type="PackedScene" uid="uid://dbhfulfo5dm40" path="res://Scenes/UI_Elements/file_small.tscn" id="2_qdvrb"]
+[ext_resource type="PackedScene" uid="uid://c827wgyqbiqhw" path="res://Scenes/UI_Elements/active_point.tscn" id="3_nf4gj"]
+[ext_resource type="PackedScene" uid="uid://fe5241evm8pk" path="res://Scenes/UI_Elements/file_big.tscn" id="4_2246s"]
+[ext_resource type="PackedScene" uid="uid://cpgd7p2pq4odp" path="res://Scenes/healthbar.tscn" id="6_plfrv"]
+
+[sub_resource type="TileSet" id="TileSet_wviqb"]
+
+[node name="UI" type="CanvasLayer"]
+script = ExtResource("1_0bin2")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+tile_set = SubResource("TileSet_wviqb")
+
+[node name="DropPoint" parent="." instance=ExtResource("1_jxero")]
+position = Vector2(224, 616)
+
+[node name="DropPoint2" parent="." instance=ExtResource("1_jxero")]
+position = Vector2(160, 616)
+
+[node name="DropPoint3" parent="." instance=ExtResource("1_jxero")]
+position = Vector2(96, 616)
+
+[node name="DropPoint4" parent="." instance=ExtResource("1_jxero")]
+position = Vector2(32, 616)
+
+[node name="ActivePoint" parent="." instance=ExtResource("3_nf4gj")]
+position = Vector2(1119, 623)
+
+[node name="File_Small" parent="." instance=ExtResource("2_qdvrb")]
+position = Vector2(32, 616)
+
+[node name="File_Big" parent="." instance=ExtResource("4_2246s")]
+position = Vector2(96, 616)
+
+[node name="Health_Bar" parent="." instance=ExtResource("6_plfrv")]
+offset_right = 160.0
+offset_bottom = 96.0
