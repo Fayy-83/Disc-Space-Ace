@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://c4gk5srletsxn"]
+
+[ext_resource type="Script" uid="uid://de76oqydawtn" path="res://Scenes/Enemies/shooty_boy.gd" id="1_e65tw"]
+[ext_resource type="PackedScene" uid="uid://desbvlm6wyji2" path="res://Scenes/Enemies/projectile.tscn" id="2_fetik"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0y67j"]
+size = Vector2(64, 32)
+
+[node name="Shooty_Boy" type="StaticBody2D"]
+script = ExtResource("1_e65tw")
+Bullet = ExtResource("2_fetik")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -48.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-16, 0)
+shape = SubResource("RectangleShape2D_0y67j")
+
+[node name="Muzzle" type="Marker2D" parent="."]
+position = Vector2(20, 0)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

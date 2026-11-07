@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://b6pgk4h7weibl"]
+
+[ext_resource type="Script" uid="uid://d0ubdoi1hcloa" path="res://Scripts/cannon.gd" id="1_qayxd"]
+[ext_resource type="Texture2D" uid="uid://ekrupxnqxg1j" path="res://Assets/Temp/cannon.png" id="2_3yub0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4c0tx"]
+size = Vector2(25, 20)
+
+[node name="Cannon" type="Area2D"]
+script = ExtResource("1_qayxd")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_4c0tx")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(17, 0)
+texture = ExtResource("2_3yub0")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

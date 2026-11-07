@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://c36ri876m4y8d"]
+
+[ext_resource type="Script" uid="uid://du2tp7nloae16" path="res://black.gd" id="1_4utgp"]
+
+[node name="Black" type="Node2D"]
+script = ExtResource("1_4utgp")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 1150.0
+offset_bottom = 640.0
+color = Color(0, 0, 0, 1)

@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://bia05050gpgq6"]
+
+[ext_resource type="Texture2D" uid="uid://rc4ogv2reenq" path="res://Scenes/Blocks/user.png" id="1_bublf"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="User" type="Sprite2D" parent="."]
+scale = Vector2(10, 10)
+texture = ExtResource("1_bublf")
+
+[node name="Camera2D" type="Camera2D" parent="User"]

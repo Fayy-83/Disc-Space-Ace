@@ -1,0 +1,207 @@
+class_name Player
+extends CharacterBody2D
+
+@export var shortcuts:bool
+
+const IFRAMES = 0.5
+var cantakedamage = true
+
+const KNOCKBACK = 200
+
+const SPEED = 300.0
+var spd = SPEED
+const JUMP_VELOCITY = -400.0
+var jump = JUMP_VELOCITY
+
+const MAX_JUMPS = 1
+var m_jumps = MAX_JUMPS
+var jumps = m_jumps
+var dir
+
+const BIG_SCALE = Vector2(2,2)
+const NORM_SCALE = Vector2(1,1)
+const SMALL_SCALE = Vector2(0.5,0.5)
+
+var canmove = true
+
+const MAX_HEALTH = 5
+var health = MAX_HEALTH
+
+var lastcp
+
+const JUMP_COEF = 1
+const FALL_COEF = 1
+var fall_coefficient = FALL_COEF
+var jump_coefficient = JUMP_COEF
+var lastfloor: Vector2
+const KNOCK_BACK_VECTOR = Vector2(50, -200)
+
+var loops = 20
+const MAX_LOOPS = 20
+
+func _ready() -> void:
+	lastcp = global_position
+	
+
+func _physics_process(delta: float) -> void:
+	if shortcuts:
+		Globals.shortcuts = shortcuts
+	# Add the gravity.
+	if not is_on_floor() and velocity.y > 0:
+		velocity += get_gravity() * delta * fall_coefficient
+	elif not is_on_floor():
+		velocity += get_gravity() * delta
+	else:
+		lastfloor= position
+		jumps = m_jumps
+
+	# Handle jump.
+	if canmove:
+		if Input.is_action_just_pressed("ui_accept") and jumps > 0:
+			_handle_jump()
+
+		# Get the input direction and handle the movement/deceleration.
+		# As good practice, you should replace UI actions with custom gameplay actions.
+		var direction := Input.get_axis("ui_left", "ui_right")
+		_play_animation(direction)
+
+	
+			
+		if direction:
+			velocity.x = direction * spd
+		else:
+			velocity.x = move_toward(velocity.x, 0, spd)
+		
+	#states
+	#____________________________________________________________
+	if Globals.state != "none":
+		match Globals.state:
+			"small":
+				jump_coefficient = 1.1 
+				fall_coefficient = 0.5
+				scale = SMALL_SCALE
+				spd = SPEED*1.2
+				m_jumps = 2
+				if self.is_in_group("heavy"):
+					self.remove_from_group("heavy")
+			"big":
+				fall_coefficient= FALL_COEF
+				scale = BIG_SCALE
+				jump_coefficient = 0.5
+				self.add_to_group("heavy")
+			"zip":
+				pass
+	
+	else:
+		if self.is_in_group("heavy"):
+			self.remove_from_group("heavy")
+		jump_coefficient= JUMP_COEF
+		fall_coefficient= FALL_COEF
+		scale = NORM_SCALE
+		spd = SPEED
+		jump = JUMP_VELOCITY
+		m_jumps = MAX_JUMPS
+	
+	if health <= 0:
+		_die()
+
+	move_and_slide()
+
+#______________________________________________________________
+
+func _on_damage_area_entered(area: Area2D) -> void:
+	if area.is_in_group("target"):
+		velocity.y = jump * jump_coefficient
+
+#hitbox
+#______________________________________________________________
+func _on_hitbox_area_entered(area: Area2D) -> void:
+	if area.is_in_group("damage"):
+		if "DAMAGE" in area.get_parent() and cantakedamage:
+			_handle_damage(area.get_parent().DAMAGE)
+		else:
+			print("No Damage Stat Found")
+			
+	if area.is_in_group("checkpoint"):
+		lastcp = global_position
+	
+	if area.is_in_group("shortcut"):
+		Globals.shortcuts = true
+		area.queue_free()
+
+func _on_spike_box_body_entered(_body: Node2D) -> void:
+	
+	#if area.physics_layer_1.collision_mask == 3:
+	print("collision = body")
+	if cantakedamage:
+		_handle_damage(1)
+		await(_handle_knockback())
+		position = lastfloor
+
+
+
+#_____________________________________________________________
+func _flip(direction):
+	if direction == -1:
+		$Player_Animation.flip_h = true
+	elif direction == 1:
+		$Player_Animation.flip_h = false
+		
+func _play_animation(direction:float):
+	_flip(direction)
+	
+	if velocity.y < 0:
+		$Player_Animation.play("Jump")
+	elif velocity.y > 0:
+		$Player_Animation.play("Fall")
+	elif velocity.x != 0:
+		$Player_Animation.play("Run")
+		
+	else:
+		$Player_Animation.play("Idle")
+	
+func _handle_damage(damage: int):
+	canmove = false
+	cantakedamage = false
+	self.modulate = Color(Color.FIREBRICK, 0.5)
+	$Shakey_Camera._add_trauma(0.3)
+	await(get_tree().create_timer(0.2).timeout)
+	self.modulate = Color(Color.WHITE, 1)
+	cantakedamage = true
+	canmove = true
+	health = health - damage
+
+func _die():
+	cantakedamage = false
+	health = MAX_HEALTH
+	self.modulate = Color(Color.FIREBRICK, 0.5)
+	canmove = false
+	velocity = Vector2(0,0)
+	$Shakey_Camera._add_trauma(0.3)
+	await(get_tree().create_timer(0.5).timeout)
+	#position = lastcp
+	get_tree().reload_current_scene()
+	canmove = true
+	self.modulate = Color(Color.WHITE, 1)
+	cantakedamage=true
+	
+
+func _handle_knockback():
+	velocity = KNOCK_BACK_VECTOR
+	self.modulate = Color(Color.FIREBRICK, 0.5)
+	await(get_tree().create_timer(0.2).timeout)
+	self.modulate = Color(Color.WHITE, 1)
+
+func _handle_knockback_dir(direc):
+	velocity = KNOCK_BACK_VECTOR * direc
+	self.modulate = Color(Color.FIREBRICK, 0.5)
+	await(get_tree().create_timer(0.2).timeout)
+	self.modulate = Color(Color.WHITE, 1)
+	move_and_slide()
+
+func _handle_jump():
+	velocity.y = jump * jump_coefficient
+	jumps = jumps - 1
+	if is_in_group("heavy"):
+		await(get_tree().create_timer(0.47).timeout) 
+		$Shakey_Camera._add_trauma(0.3)

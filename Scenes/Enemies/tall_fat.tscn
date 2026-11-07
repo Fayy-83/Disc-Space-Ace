@@ -1,0 +1,92 @@
+[gd_scene load_steps=12 format=3 uid="uid://dkroolhep57ar"]
+
+[ext_resource type="Script" uid="uid://dl5c3bibp3qu" path="res://stronk_head_enemy.gd" id="1_hq4cn"]
+[ext_resource type="Texture2D" uid="uid://bgsuswx775xf8" path="res://Assets/notagoomba.png" id="2_qcnvb"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jlhm6"]
+atlas = ExtResource("2_qcnvb")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8hadf"]
+atlas = ExtResource("2_qcnvb")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_77w1q"]
+atlas = ExtResource("2_qcnvb")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_chipv"]
+atlas = ExtResource("2_qcnvb")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dppj8"]
+atlas = ExtResource("2_qcnvb")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wexbn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jlhm6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8hadf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_77w1q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_chipv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dppj8")
+}],
+"loop": true,
+"name": &"Move",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7hf6b"]
+radius = 11.0
+height = 56.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_u5tv8"]
+radius = 13.0
+height = 59.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nu8ua"]
+size = Vector2(22, 2)
+
+[node name="Tall_Fat" type="CharacterBody2D"]
+scale = Vector2(1, 2)
+script = ExtResource("1_hq4cn")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+modulate = Color(0.57, 0.3192, 0.0684, 1)
+position = Vector2(0, -15.5)
+scale = Vector2(1, 1.96875)
+sprite_frames = SubResource("SpriteFrames_wexbn")
+animation = &"Move"
+frame_progress = 0.15629898
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -13)
+shape = SubResource("CapsuleShape2D_7hf6b")
+
+[node name="A_Hitbox" type="Area2D" parent="." groups=["damage"]]
+position = Vector2(0, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="A_Hitbox"]
+position = Vector2(0, -20)
+shape = SubResource("CapsuleShape2D_u5tv8")
+
+[node name="D_Hitbox" type="Area2D" parent="." groups=["target"]]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="D_Hitbox"]
+position = Vector2(0, -43)
+shape = SubResource("RectangleShape2D_nu8ua")
+
+[connection signal="area_entered" from="A_Hitbox" to="." method="_on_a_hitbox_area_entered"]
+[connection signal="area_entered" from="D_Hitbox" to="." method="_on_d_hitbox_area_entered"]

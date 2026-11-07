@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://dtd40larsisil"]
+
+[ext_resource type="Texture2D" uid="uid://bf2mlvof4vaoq" path="res://Assets/placeholder.png" id="1_lbcco"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lbcco"]
+size = Vector2(32, 32)
+
+[node name="checkpoint" type="Node2D" groups=["checkpoints"]]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("1_lbcco")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_lbcco")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+color = Color(0.1761114, 0.64508945, 5.7756904e-07, 1)

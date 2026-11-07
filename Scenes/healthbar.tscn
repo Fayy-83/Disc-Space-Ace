@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cpgd7p2pq4odp"]
+
+[ext_resource type="Texture2D" uid="uid://b5wpjenci4nh1" path="res://Assets/health.png" id="1_1v5t1"]
+[ext_resource type="Texture2D" uid="uid://dpt52k6u1fyxl" path="res://Assets/bar.png" id="2_bngtt"]
+
+[node name="TextureProgressBar" type="TextureProgressBar"]
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(2, 2)
+max_value = 5.0
+value = 5.0
+texture_under = ExtResource("1_1v5t1")
+texture_progress = ExtResource("2_bngtt")
+texture_progress_offset = Vector2(18, 74)

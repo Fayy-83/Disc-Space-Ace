@@ -1,0 +1,75 @@
+[gd_scene load_steps=16 format=3 uid="uid://d0jmvmlms2xei"]
+
+[ext_resource type="Texture2D" uid="uid://kmrr54gmhh8r" path="res://Assets/goonstashgone.png" id="1_16qlq"]
+[ext_resource type="Script" uid="uid://dgmx77y5fh5pp" path="res://Scripts/goonsearchnotfound.gd" id="1_74jgi"]
+[ext_resource type="Texture2D" uid="uid://cl7nhlk5wisbj" path="res://Assets/shocked.png" id="1_ixtkr"]
+[ext_resource type="Texture2D" uid="uid://bgwuj6w1el7mh" path="res://Assets/goonstashsearch.png" id="2_l0h0b"]
+[ext_resource type="Script" uid="uid://de5327st0vysy" path="res://Scripts/goonstashsearch.gd" id="3_o403s"]
+[ext_resource type="Script" uid="uid://dgvkc1uf00sye" path="res://Scripts/goonsearchinitial.gd" id="3_p4yxr"]
+[ext_resource type="Texture2D" uid="uid://cc4m20e44huw2" path="res://Assets/user.png" id="4_ixtkr"]
+[ext_resource type="FontFile" uid="uid://d0ct512ne5o6e" path="res://Assets/fonts/perfect_dos_vga_437/Perfect DOS VGA 437.ttf" id="4_o403s"]
+[ext_resource type="Script" uid="uid://bairwnuog5kyn" path="res://Scripts/goonstashbutton.gd" id="5_i1rto"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_t7fd2"]
+texture = ExtResource("1_ixtkr")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ofypg"]
+texture = ExtResource("1_16qlq")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i1rto"]
+texture = ExtResource("2_l0h0b")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_74jgi"]
+texture = ExtResource("4_ixtkr")
+
+[sub_resource type="InputEventKey" id="InputEventKey_o403s"]
+keycode = 4194309
+
+[sub_resource type="Shortcut" id="Shortcut_i1rto"]
+events = [SubResource("InputEventKey_o403s")]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Panel4" type="Panel" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_t7fd2")
+
+[node name="Panel3" type="Panel" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_ofypg")
+script = ExtResource("1_74jgi")
+
+[node name="Panel2" type="Panel" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_i1rto")
+script = ExtResource("3_p4yxr")
+
+[node name="Panel" type="Panel" parent="."]
+visible = false
+offset_right = 1152.0
+offset_bottom = 648.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_74jgi")
+script = ExtResource("3_o403s")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button" type="Button" parent="Control"]
+layout_mode = 0
+offset_left = 368.0
+offset_top = 608.0
+offset_right = 790.0
+offset_bottom = 648.0
+theme_override_fonts/font = ExtResource("4_o403s")
+theme_override_font_sizes/font_size = 32
+shortcut = SubResource("Shortcut_i1rto")
+text = "Continue? (Press Enter)"
+script = ExtResource("5_i1rto")
+
+[connection signal="pressed" from="Control/Button" to="Control/Button" method="_on_pressed"]
